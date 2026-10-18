@@ -36,6 +36,7 @@ def detect(flows, graph):
             alerts.append({**fl, "reasons": reasons})
     return alerts
 
+
 def build_baselines(flows):
     """Mean and standard deviation of bytes per (source, destination) pair, from normal days only."""
     from statistics import mean, pstdev
@@ -58,6 +59,7 @@ def detect_volume(flows, baselines, threshold=4):
             alerts.append({**fl, "reasons": [f"volume {fl['bytes']:,} bytes is far above normal"]})
     return alerts
 
+
 def merge_alerts(alerts):
     """One alert per flow, with every reason combined."""
     merged = {}
@@ -68,6 +70,7 @@ def merge_alerts(alerts):
         else:
             merged[key] = {**a, "reasons": list(a["reasons"])}
     return list(merged.values())
+
 
 def detect_daily_count(flows, margin=1.0):
     """Flag a device whose flow count to a destination on day 7 exceeds its normal daily max."""
@@ -89,8 +92,9 @@ def detect_daily_count(flows, margin=1.0):
             alerts.append({**fl, "reasons": ["daily flow count above normal maximum"]})
     return alerts
 
-def detect_daily_bytes(flows):
-    """Flag an IoT device whose day-7 bytes to a destination exceed its normal daily max."""
+
+def detect_daily_bytes(flows, margin=1.0, iot_only=True):
+    """Flag a device whose day-7 bytes to a destination exceed its normal daily max."""
     from collections import defaultdict
 
     daily = defaultdict(int)
@@ -106,7 +110,9 @@ def detect_daily_bytes(flows):
         {"day": 7, "source": src, "destination": dst, "bytes": total,
          "reasons": [f"daily bytes {total:,} above normal max {normal_max[(src, dst)]:,}"]}
         for (day, src, dst), total in daily.items()
-        if day == 7 and (src, dst) in normal_max and total > normal_max[(src, dst)]
+        if day == 7 and (src, dst) in normal_max
+        and total > normal_max[(src, dst)] * margin
+        and (not iot_only or src.startswith("iot_"))
     ]
 
 
@@ -118,4 +124,4 @@ if __name__ == "__main__":
     print(f"Flows checked: {len(flows)}")
     print(f"Alerts raised: {len(alerts)}\n")
     for a in alerts:
-        print(f"{a['label']:17} {a['source']} -> {a['destination']}  {a['reasons']}")
+        print(f"{a.get('label', ''):17} {a['source']} -> {a['destination']}  {a['reasons']}")
