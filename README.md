@@ -19,6 +19,16 @@ Organisations often secure their computers while overlooking the connected devic
 5. **Evaluates** the detectors across 5 random seeds with precision, recall and false positives.
 6. **Serves everything over a FastAPI backend** to a React dashboard.
 
+## Demo
+
+Clicking the aquarium controller simulates a compromise. Before segmentation, it reaches both databases and the file server through the API server:
+
+![Before segmentation](docs/before.png)
+
+After segmentation, the same compromised device has no path to any sensitive asset:
+
+![After segmentation](docs/after.png)
+
 ## Architecture
 
 ```
