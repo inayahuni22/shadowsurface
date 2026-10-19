@@ -75,6 +75,8 @@ def add_ingest_gateway(graph, iot_sources):
     for s in iot_sources:
         if g.has_edge(s, "server_api"):
             reason = g.edges[s, "server_api"]["reason"]
+            if reason.startswith("Intentionally"):
+             reason = "Telemetry via isolated ingest gateway"
             g.remove_edge(s, "server_api")
             g.add_edge(s, "iot_ingest", ports=[443], protocol="TCP", reason=reason)
     return g

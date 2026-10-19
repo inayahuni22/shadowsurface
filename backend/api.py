@@ -88,3 +88,29 @@ def get_alerts(seed: int = 1):
         "flow_alerts": strip_label(flow_alerts),
         "device_alerts": device_alerts,
     }
+
+@app.get("/summary")
+def get_summary(seed: int = 1):
+    before, after = build_fixed_network()
+    g = load_network()
+    flows = load_flows(seed)
+    flow_alerts = merge_alerts(detect(flows, g) + detect_volume(flows, build_baselines(flows)))
+    return {
+        "device_count": before.number_of_nodes(),
+        "connection_count": before.number_of_edges(),
+        "risky_before": len(risky_devices(before)),
+        "risky_after": len(risky_devices(after)),
+        "flow_alert_count": len(flow_alerts),
+        "device_alert_count": len(detect_daily_bytes(flows)),
+    }
+
+@app.get("/network/segmented")
+def get_segmented_network():
+    _, fixed = build_fixed_network()
+    nodes = [dict(d) for _, d in fixed.nodes(data=True)]
+    edges = [
+        {"source": u, "destination": v, "ports": d["ports"],
+         "protocol": d["protocol"], "reason": d["reason"]}
+        for u, v, d in fixed.edges(data=True)
+    ]
+    return {"nodes": nodes, "edges": edges}
