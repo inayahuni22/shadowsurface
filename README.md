@@ -123,7 +123,7 @@ Full shapes are in [`API_SPEC.md`](API_SPEC.md). CORS is open (`*`) for local de
 
 ## Frontend and AI-tool disclosure
 
-The dashboard UI (React, TypeScript, Tailwind, React Flow) was **scaffolded with Lovable** from a prompt I wrote against the API spec above. The interaction design (compromise simulation, before/after toggle, remediated markers) and the reviewing and testing of its behaviour against the API are mine. The network model, attack-path analysis, segmentation logic, traffic simulator, detectors, evaluation and API are written and verified by me in Python. The frontend lives in its own repository: *(add link)*.
+The dashboard UI (React, TypeScript, Tailwind, React Flow) was **scaffolded with Lovable** from a prompt I wrote against the API spec above. The interaction design (compromise simulation, before/after toggle, remediated markers) and the reviewing and testing of its behaviour against the API are mine. The network model, attack-path analysis, segmentation logic, traffic simulator, detectors, evaluation and API are written and verified by me in Python. The frontend lives in its own repository: *(https://network-before-after-atlas.lovable.app)*.
 
 ## Repository layout
 
