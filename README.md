@@ -131,9 +131,9 @@ If PowerShell blocks the activate script: `Set-ExecutionPolicy -Scope CurrentUse
 
 Full shapes are in [`API_SPEC.md`](API_SPEC.md). CORS is open (`*`) for local demos and should be restricted before any public hosting.
 
-## Frontend and AI-tool disclosure
+## Frontend
 
-The dashboard UI (React, TypeScript, Tailwind, React Flow) was **scaffolded with Lovable** from a prompt I wrote against the API spec above. The interaction design (compromise simulation, before/after toggle, remediated markers) and the reviewing and testing of its behaviour against the API are mine. The network model, attack-path analysis, segmentation logic, traffic simulator, detectors, evaluation and API are written and verified by me in Python. The frontend lives in its own repository: *(https://network-before-after-atlas.lovable.app)*.
+The dashboard is built with React, TypeScript, Tailwind and React Flow, and lives in its own repository: *(https://network-before-after-atlas.lovable.app)*. It only displays what the API returns; all analysis runs in the Python backend.
 
 The dashboard expects the backend at `http://127.0.0.1:8000`, so start `uvicorn api:app --reload` before opening it.
 
